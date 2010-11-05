@@ -1,0 +1,12 @@
+--- 
+name: "MooTune"
+description: "Analytics & A/B testing with configurable backends."
+category: "Utilities"
+tags: 
+  - "analytics"
+current: "0.1"
+author: "3n"
+contact: "ian.collins@gmail.com"
+website: "http://www.iancollins.me"
+sources:
+  - "Source/MooTune.js"
