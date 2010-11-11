@@ -141,7 +141,7 @@ Example
 		  { name: 'Header Signup Button Text',
 		    description: 'Change the text of the button in the header that scrolls down to the form.',
 		    type: 'text',
-		    element: 'header-sign-up',
+		    element: '#header-sign-up',
 		    versions: [
 		      'Get on the beta list',
 		      'Save your spot',
@@ -151,7 +151,7 @@ Example
 		  { name: 'Header Signup Button Color',
 		    description: 'Change the color of the button in the header that scrolls down to the form.',
 		    type: 'class',
-		    element: 'header-sign-up',
+		    element: '#header-sign-up',
 		    versions: [
 		      'blue',
 		      'green'
@@ -160,7 +160,7 @@ Example
 
 		  { name: 'Headline Text',
 		    type: 'text',
-		    element: 'headline',
+		    element: '#headline',
 		    versions: [
 		      'Banking shouldn’t be hard.',
 		      'Isn’t it time for simple banking?',
