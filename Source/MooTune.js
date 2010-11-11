@@ -106,7 +106,7 @@ var MooTune = new Class({
       }
     });
     
-    $(test.element).set(test.type, version);    
+    $$(test.element).set(test.type, version);    
     test.running = true;
     
     if (test.onSelected) test.onSelected(version, this);

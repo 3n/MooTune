@@ -70,8 +70,8 @@ options as you want). When instantiating MooTune, pass in an array of tests. Tes
 	
 	{ name: 'Test Name',
 	  description: 'Optional Description',
-	  element: 'id-of-element' // the id of the element to modify
-	  type: 'class', // what to set on the element (class, text, html etc)
+	  element: '#css .selector' // a css selector to get the element(s)
+	  type: 'class', // what to set on the element(s) (class, text, html etc)
 	  sampleSize: 1, // float between 0 and 1 for percentage of users to test
 	  alwaysRun: false, // overrides the MooTune option for number of tests to run
 	  versions: [
