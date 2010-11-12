@@ -16,6 +16,8 @@ provides: [MooTune]
 
 // todo 
 // use cookie to ensure user is always on same test for session?
+// add ability to force a test based on params?
+// specify an array of backends per call to handleEvent
 
 var MooTune = new Class({
   Implements: [Events, Options],
@@ -141,7 +143,7 @@ var MooTune = new Class({
           info: {
             pageUrl: document.URL,
             time: new Date().getTime(),
-            userAgent: navigator.userAgent
+            userAgent: navigator.userAgent // todo user Browser hash info
           }
         };
         
