@@ -101,7 +101,10 @@ Options
 
 * reportErrors - (boolean: defaults to true) Send Javascript errors to the Backend(s).
 * tests - (array: defaults to []) Array of test objects.
-* testsAtOnce - (int: defaults to null) Number of tests to run. Null means all.
+* testsAtOnce - (int: defaults to null) How many tests from the tests array to run. Null means all.
+						    if you specify a number N, the tests array will be shuffled and the first N will be
+								ran. All other tests will be ignored for this session, unless they have the alwaysRun
+								flag turned on.
 * testSchema - (object) The schema and defaults of the test object.
 * eventSchema - (object) The schema and defaults of the event object.
 
