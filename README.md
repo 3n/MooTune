@@ -52,6 +52,8 @@ When instantiating MooTune you can either pass in an array of Backends, or let i
 whatever you have available. A Backend is an object that looks like this:
 
 	'Name': {
+		sendTestsAsEvents: <boolean>, // see below
+		sendTestsWithEvents: <boolean>, // see below
 		serviceAvailable: function(){
 			// returns true if service can be used (e.g. tracker code installed)
 		},
@@ -59,6 +61,13 @@ whatever you have available. A Backend is an object that looks like this:
 			// is passed an event and relays it to correct tracker/analytics service
 		}
 	}
+	
+* sendTestsAsEvents - When each test is selected to run it is sent as an event with the form:
+	(Test) Name-of-test / selected-value. Use this option for backend systems that do not allow for
+	arbitrary key/value properties to be sent with events.
+* sendTestsWithEvents - Each time an event is fired, a hash containing all of the your tests will
+	be included, in the form { test-name: selected-value }. 
+	If the test is not running, the value of the pair will be replaced with 'not running.'
 
 
 A/B & Multivariate Testing
@@ -84,11 +93,20 @@ options as you want). When instantiating MooTune, pass in an array of tests. Tes
 	}
 
 When a MooTune instance is created with a set of tests, it first determines (based on your options)
-how many of the tests to run. It then runs those tests, which just means firing an event with the 
-name of the test and the version selected, then modifying the specified element. Then in your 
-analytics service you can compare the test events vs. whatever event you want to measure
-against (e.g. "User Signed Up"). It is as simple as that. The best way I've found to use this data
-is by creating flows for each test on Mixpanel.com. Do it.
+how many of the tests to run. 
+
+It then runs those tests, which can mean one of two things, depending on the options set for the
+backend recieving the data:
+
+1. sendTestsAsEvents:true - Test triggers an event that can be tracked against all other events.
+   Using this method, you can compare the number of times a test event fired vs. a conversion
+   event. If your analytics backend provides funnels, use them.
+2. sendTestsWithEvents:true - Nothing at this point, but when any other event fires, all your tests
+   will be included as properties. This allows you to drill down into an event (e.g. Signup) and 
+   see the success ratio of each test's option.
+	
+After one (or both) of those options is complete, the element itself is modified in the way you
+specified, using the value selected at random.
 
 
 Class Documentation
@@ -177,12 +195,3 @@ Example
     }
 
 	});
-
-
-
-
-
-
-
-
-
