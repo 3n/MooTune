@@ -19,6 +19,7 @@ provides: [MooTune]
 // add ability to force a test based on params?
 // specify an array of backends per call to handleEvent
 // per-event blocking of test inclusion
+// overall test of logging when not all tests are running. fix issues with basic systems like google.
 
 var MooTune = new Class({
   Implements: [Events, Options],
