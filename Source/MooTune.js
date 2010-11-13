@@ -18,6 +18,7 @@ provides: [MooTune]
 // use cookie to ensure user is always on same test for session?
 // add ability to force a test based on params?
 // specify an array of backends per call to handleEvent
+// per-event blocking of test inclusion
 
 var MooTune = new Class({
   Implements: [Events, Options],
