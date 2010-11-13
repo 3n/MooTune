@@ -84,7 +84,7 @@ var MooTune = new Class({
       this.options.testsAtOnce = this.tests.length;
     
     this.options.testsAtOnce.times(function(i){
-      this.runTest(this.tests[i]);
+      this.tests[i] = this.runTest(this.tests[i]);
     }, this);
     
     this.tests.filter(function(item){ return item.alwaysRun && !item.running; }).each(function(test){
@@ -99,14 +99,18 @@ var MooTune = new Class({
       return this;
     
     var version = test.versions.getRandom();
+    test.selectedVersion = version;
     
-    this.handleEvent({
-      name: '(Test) ' + test.name + ' / ' + version,
-      info: {
-        category: 'Test',
-        description: test.description
-      }
-    });
+    Object.each(this.backends, function(backend, name){
+      if (backend.sendTestsAsEvents)
+        backend.handleEvent({
+          name: '(Test) ' + test.name + ' / ' + version,
+          info: {
+            category: 'Test',
+            description: test.description
+          }
+        });
+    }, this);
     
     switch(test.type){
       case 'class':
@@ -121,7 +125,14 @@ var MooTune = new Class({
     
     if (test.onSelected) test.onSelected(version, this);
     this.fireEvent('testRunning', [test, this]);
-    return this;
+
+    return test;
+  },
+  
+  getRunningTests: function(){
+    return this.tests.filter(function(test){
+      return test.running;
+    });
   },
   
   handleError: function(msg, url, linenumber){
@@ -154,7 +165,17 @@ var MooTune = new Class({
       return this;
     
     Object.each(this.backends, function(backend, name){
-      backend.handleEvent(eventWithDefaults);
+      if (backend.sendTestsWithEvents){
+        var eventWithTests = { info: {} };
+        this.tests.each(function(test){
+          eventWithTests['info']['(Test) ' + test.name] = test.running ? test.selectedVersion : 'not running';
+        });
+        
+        Object.merge(eventWithTests, eventWithDefaults);
+        backend.handleEvent(eventWithTests);
+      } else
+        backend.handleEvent(eventWithDefaults);
+    
       this.fireEvent('eventSentToBackend', [name, backend, this]);
     }, this);
     
@@ -167,6 +188,7 @@ var MooTune = new Class({
 
 MooTune.Backends = {
   'GoogleAnalytics': {
+    sendTestsAsEvents: true,
     serviceAvailable: function(){
       return typeof(pageTracker) == "object" || typeof(_gaq) == "object";
     },
@@ -178,6 +200,7 @@ MooTune.Backends = {
     }
   },
   'Mixpanel': {
+    sendTestsWithEvents: true,
     serviceAvailable: function(){
       return typeof(mpmetrics) != 'undefined';
     },
