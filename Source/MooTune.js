@@ -28,6 +28,7 @@ var MooTune = new Class({
   
   options: {
     reportErrors: true,
+    testAppliedClass: 'mooTuned',
     
     tests: [],
     testsAtOnce: null,
@@ -116,14 +117,17 @@ var MooTune = new Class({
         });
     }, this);
     
+    var elem = $$(test.element);
+    
     switch(test.type){
       case 'class':
-        $$(test.element).addClass(version);
+        elem.addClass(version);
         break;
       default:
-        $$(test.element).set(test.type, version);
+        elem.set(test.type, version);
         break;
-    }
+    }    
+    elem.addClass(this.options.testAppliedClass);
   
     test.running = true;
     
