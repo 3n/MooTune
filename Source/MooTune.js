@@ -20,6 +20,7 @@ provides: [MooTune]
 // specify an array of backends per call to handleEvent
 // per-event blocking of test inclusion
 // overall test of logging when not all tests are running. fix issues with basic systems like google.
+// send alert to event backend if something went wrong with a test (elem not found etc)
 
 var MooTune = new Class({
   Implements: [Events, Options],
