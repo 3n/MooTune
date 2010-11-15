@@ -79,7 +79,7 @@ var MooTune = new Class({
   
   attach: function(){
     if (this.options.reportErrors)
-      window.onerror = this.handleError;
+      window.onerror = this.handleError.bind(this);
 
     return this;
   },
@@ -145,9 +145,10 @@ var MooTune = new Class({
   
   handleError: function(msg, url, linenumber){
     var error = {      
-      name: msg,
+      name: 'Javascript Error',
       info: {
         category: 'Error',
+        description: msg,
         url: url,
         linenumber: linenumber
       }
