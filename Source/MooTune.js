@@ -211,10 +211,13 @@ MooTune.Backends = {
   'Mixpanel': {
     sendTestsWithEvents: true,
     serviceAvailable: function(){
-      return typeof(mpmetrics) != 'undefined';
+      return typeof(mpmetrics) != 'undefined' || typeof(mpq) != 'undefined';
     },
     handleEvent: function(event){
-      mpmetrics.track(event.name, event.info);
+      if (typeof(mpmetrics) == 'object')
+        mpmetrics.track(event.name, event.info);
+      else if (typeof(mpq) == 'object')
+        mpq.push(['track', event.name, event.info]);
     }
   }/*,
   'Basic': {
