@@ -8,6 +8,7 @@ description: app.js for BankSimple.com static marketing site
 requires: 
   - More/Array.Extras
   - Core/Class.Extras
+  - Core/Browser
 
 provides: [MooTune]
 
@@ -163,7 +164,9 @@ var MooTune = new Class({
           info: {
             pageUrl: document.URL,
             time: new Date().getTime(),
-            userAgent: navigator.userAgent // todo user Browser hash info
+            userAgent: navigator.userAgent,
+            platform: Browser.Platform.name,
+            browser: Browser.name
           }
         };
         
