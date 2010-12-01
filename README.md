@@ -1,10 +1,27 @@
-Overview
-========
+MooTune
+=======
 
 A MooTools class for logging events, errors and AB tests to multiple backends such as Google Analytics,
 Mixpanel or your own server logs. It can be used to gain insights into the actions your user's take
 on your site, the errors they encounter and the affect of variations on the site with their 
-interactions. Let's go over some core concepts:
+interactions.
+
+_Note: this is an alpha release with functionality that matches my needs and hopefully a few other
+people. We're using it on banksimple.com and it's great, but you may need to modify it to your
+tastes. Mixpanel is highly recommended, especially over Google Analytics, since the event tracking
+there is a wasteland._
+
+How to use
+----------
+
+1. Setup the tracking scripts for the backend services you'd like to use (e.g Google Analytics,
+   Mixpanel). Asynchronous scripts should work fine, so use them.
+2. Create a backend if you're using your own server or a service other than the ones mentioned.
+3. Somewhere very early in your application's javascript, create an instance of MooTune (after 
+   domready if you have tests that modify elements).
+4. When something happens that you'd like to track, call handleEvent on your instance and pass
+   it an event name and a dictionary/map/object of info.
+5. Enjoy your sweet, sweet data.
 
 
 Events
