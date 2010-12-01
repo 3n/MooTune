@@ -1,9 +1,9 @@
 /*
 ---
 
-name: app
-script: app.js
-description: app.js for BankSimple.com static marketing site
+name: MooTune
+script: MooTune.js
+description: A MooTools class for logging events, errors and AB tests to multiple backends
 
 requires: 
   - More/Array.Extras
@@ -11,6 +11,9 @@ requires:
   - Core/Browser
 
 provides: [MooTune]
+
+authors:
+  - Ian Collins
 
 ...
 */
