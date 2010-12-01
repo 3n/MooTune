@@ -218,20 +218,20 @@ Example
 Screenshots
 ===========
 
-_Events on Mixpanel:_
+_Events on Mixpanel:_  
 ![Events on Mixpanel](http://idisk.me.com/iancollins/Public/Pictures/Skitch/stats-20101201-145139.png)
 
-_Random Test Distribution:_
+_Random Test Distribution:_  
 ![Random Distribution](http://idisk.me.com/iancollins/Public/Pictures/Skitch/test_distro-20101201-145052.png)
 
-_Which Sections are the Most Read?:_
+_Which Sections are the Most Read?:_  
 ![Sections Read](http://idisk.me.com/iancollins/Public/Pictures/Skitch/sections_read-20101201-145319.png)
 
-_Guilloche Renders Per Platform:_
+_Guilloche Renders Per Platform:_  
 ![Guilloche Platform](http://idisk.me.com/iancollins/Public/Pictures/Skitch/guilloche_platform-20101201-145404.png)
 
-_An A/B Test's Results:_
+_An A/B Test's Results:_  
 ![A/B Test](http://idisk.me.com/iancollins/Public/Pictures/Skitch/ab_test-20101201-145504.png)
 
-_Example Funnel:_
+_Example Funnel:_  
 ![Funnel](http://idisk.me.com/iancollins/Public/Pictures/Skitch/BankSimple_Static_Jekyll___Funnel_%28Guilloche_Rendered%29_-_Mixpanel_%7C_Real-time_Web_Analytics%2C_Funnel_Analysis-20101201-145727.png)
