@@ -128,13 +128,12 @@ After one (or both) of those options is complete, the element itself is modified
 specified, using the value selected at random.
 
 
-Class Documentation
-===================
+MooTune Method: constructor
+---------------------------
 
 	var mt = new MooTune(options);
 
-Options
--------
+#### Options
 
 * reportErrors - (boolean: defaults to true) Send Javascript errors to the Backend(s).
 * tests - (array: defaults to []) Array of test objects.
@@ -145,8 +144,7 @@ Options
 * testSchema - (object) The schema and defaults of the test object.
 * eventSchema - (object) The schema and defaults of the event object.
 
-Events
-------
+#### Events
 
 * testRunning - When a test is selected and runs. Arguments: test object and this.
 * error - When a Javascript error happens. Arguments: error event object and this.
@@ -154,26 +152,23 @@ Events
 * eventSentToBackend - The event was sent to a backend. Arguments: name of the backend, the backend object and this.
 * eventComplete - The event was handled completely. Arguments: event object and this.
 
-Method: handleEvent
-===================
 
-Syntax
-------
+MooTune Method: handleEvent
+---------------------------
+
+#### Syntax
 
 	mt.handleEvent(event);
 	
-Arguments
----------
+#### Arguments
 
 1. event - event object (details above).
 
-Returns
--------
+#### Returns
 
 Instance of MooTune (for chaining).
 
-Example
-=======
+#### Example
 
 	var mt = new MooTune({
 		
@@ -216,7 +211,7 @@ Example
 	});
 
 Screenshots
-===========
+-----------
 
 _Events on Mixpanel:_  
 ![Events on Mixpanel](http://idisk.me.com/iancollins/Public/Pictures/Skitch/stats-20101201-145139.png)
