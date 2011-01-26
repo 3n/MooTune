@@ -169,7 +169,8 @@ var MooTune = new Class({
             time: new Date().getTime(),
             userAgent: navigator.userAgent,
             platform: Browser.Platform.name,
-            browser: Browser.name
+            browser: Browser.name,
+            referrer: document.referrer
           }
         };
         
