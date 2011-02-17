@@ -102,6 +102,7 @@ options as you want). When instantiating MooTune, pass in an array of tests. Tes
 	  type: 'class', // what to set on the element(s) (class, text, html etc)
 	  sampleSize: 1, // float between 0 and 1 for percentage of users to test
 	  alwaysRun: false, // overrides the MooTune option for number of tests to run
+		persist: false, // stores test choice in cookie to persist across user's sessions
 	  versions: [
 	    'some',
 	    'values',

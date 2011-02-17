@@ -7,6 +7,7 @@ description: A MooTools class for logging events, errors and AB tests to multipl
 
 requires: 
   - More/Array.Extras
+  - More/Hash.Cookie
   - Core/Class.Extras
   - Core/Browser
 
@@ -42,6 +43,7 @@ var MooTune = new Class({
       type: 'class',
       sampleSize: 1,
       alwaysRun: false,
+      persist: false,
       versions: []
       // onSelected: function(){}
     },
@@ -107,7 +109,7 @@ var MooTune = new Class({
     if (!( Math.random() < test.sampleSize ))
       return this;
     
-    var version = test.versions.getRandom();
+    var version = this.getTestVersion(test);
     test.selectedVersion = version;
     
     Object.each(this.backends, function(backend, name){
@@ -139,6 +141,20 @@ var MooTune = new Class({
     this.fireEvent('testRunning', [test, this]);
 
     return test;
+  },
+  getTestVersion: function(test){
+    if (test.persist){
+      this.testCookieStore = this.testCookieStore || new Hash.Cookie('MooTuneTests', {duration: 100});
+      var storedIndex = this.testCookieStore.get(test.name);
+      if (storedIndex != undefined)
+        return test.versions[storedIndex];
+      else {
+        var randomIndex = (Math.random() * (test.versions.length-1)).round();
+        this.testCookieStore.set(test.name, randomIndex);
+        return test.versions[randomIndex];
+      }
+    } else
+      return test.versions.getRandom();
   },
   
   getRunningTests: function(){
