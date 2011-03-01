@@ -144,6 +144,8 @@ MooTune Method: constructor
 								flag turned on.
 * testSchema - (object) The schema and defaults of the test object.
 * eventSchema - (object) The schema and defaults of the event object.
+* testAppliedClass - (string: defaults to 'mooTuned') class to add to test-modified element.
+* useUrlParams - (boolean: defaults to true) parses the parameters in document.location.search and uses any testName/testVersion pairs to statically pick a test version. If the testVersion is a number, it will use that as an index into the versions array.
 
 #### Events
 

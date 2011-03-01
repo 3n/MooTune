@@ -6,10 +6,11 @@ script: MooTune.js
 description: A MooTools class for logging events, errors and AB tests to multiple backends
 
 requires: 
-  - More/Array.Extras
-  - More/Hash.Cookie
   - Core/Class.Extras
   - Core/Browser
+  - More/Array.Extras
+  - More/Hash.Cookie
+  - More/String.QueryString
 
 provides: [MooTune]
 
@@ -34,6 +35,7 @@ var MooTune = new Class({
   options: {
     reportErrors: true,
     testAppliedClass: 'mooTuned',
+    useUrlParams: true,
     
     tests: [],
     testsAtOnce: null,
@@ -44,7 +46,7 @@ var MooTune = new Class({
       sampleSize: 1,
       alwaysRun: false,
       persist: false,
-      versions: []
+      versions: []      
       // onSelected: function(){}
     },
     
@@ -69,6 +71,9 @@ var MooTune = new Class({
     this.tests = this.options.testsAtOnce == null 
                   ? this.options.tests 
                   : this.options.tests.shuffle();
+    
+    if (this.options.useUrlParams)
+      this.urlParams = document.location.search.slice(1).parseQueryString();
                   
     this.runTests();
     
@@ -143,7 +148,12 @@ var MooTune = new Class({
     return test;
   },
   getTestVersion: function(test){
-    if (test.persist){
+    if (this.options.useUrlParams && this.urlParams[test.name] !== undefined){
+      var paramName = this.urlParams[test.name],
+          num = paramName.toInt();
+      if (!isNaN(num)) return test.versions[num];
+      else return paramName;
+    } else if (test.persist){
       this.testCookieStore = this.testCookieStore || new Hash.Cookie('MooTuneTests', {duration: 100});
       var storedIndex = this.testCookieStore.get(test.name);
       if (storedIndex != undefined)
