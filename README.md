@@ -103,6 +103,7 @@ options as you want). When instantiating MooTune, pass in an array of tests. Tes
 	  sampleSize: 1, // float between 0 and 1 for percentage of users to test
 	  alwaysRun: false, // overrides the MooTune option for number of tests to run
 		persist: false, // stores test choice in cookie to persist across user's sessions
+		pickVersion: function(){ return test.versions[0]; }, // forces first version every time
 	  versions: [
 	    'some',
 	    'values',

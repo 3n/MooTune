@@ -47,7 +47,8 @@ var MooTune = new Class({
       alwaysRun: false,
       persist: false,
       versions: []      
-      // onSelected: function(){}
+      // onSelected: function
+      // pickVersion: function
     },
     
     eventSchema: {
@@ -163,8 +164,11 @@ var MooTune = new Class({
         this.testCookieStore.set(test.name, randomIndex);
         return test.versions[randomIndex];
       }
-    } else
-      return test.versions.getRandom();
+    } else if (test.pickVersion){
+      var pickedVersion = test.pickVersion();
+      if (pickedVersion) return pickedVersion;
+    }
+    return test.versions.getRandom();
   },
   
   getRunningTests: function(){
