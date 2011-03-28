@@ -33,6 +33,7 @@ var MooTune = new Class({
   Implements: [Events, Options],
   
   options: {
+    active: true,
     reportErrors: true,
     testAppliedClass: 'mooTuned',
     useUrlParams: true,
@@ -62,9 +63,12 @@ var MooTune = new Class({
   },
   
   eventsLog: [],
+  active: false,
   
   initialize: function(options){
     this.setOptions(options);
+    
+    if (this.options.active) this.activate();
     
     this.detectBackends();    
     this.attach();
@@ -96,6 +100,9 @@ var MooTune = new Class({
     return this;
   },
   
+  activate: function(){ this.active = true; },
+  deactiveat: function(){ this.active = false; },
+  
   runTests: function(){
     if (this.options.testsAtOnce == null)
       this.options.testsAtOnce = this.tests.length;
@@ -119,7 +126,7 @@ var MooTune = new Class({
     test.selectedVersion = version;
     
     Object.each(this.backends, function(backend, name){
-      if (backend.sendTestsAsEvents)
+      if (backend.sendTestsAsEvents && this.active)
         backend.handleEvent({
           name: '(Test) ' + test.name + ' / ' + version,
           info: {
@@ -193,6 +200,8 @@ var MooTune = new Class({
   },
   
   handleEvent: function(event){
+    if (!this.active) return this;
+    
     var eventWithDefaults = {
           info: {
             pageUrl: document.URL,

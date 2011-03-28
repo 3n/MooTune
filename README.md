@@ -137,6 +137,7 @@ MooTune Method: constructor
 
 #### Options
 
+* active - (boolean: defaults to true) Whether or not to fire events passed to handleEvent.
 * reportErrors - (boolean: defaults to true) Send Javascript errors to the Backend(s).
 * tests - (array: defaults to []) Array of test objects.
 * testsAtOnce - (int: defaults to null) How many tests from the tests array to run. Null means all.
