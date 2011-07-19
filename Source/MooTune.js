@@ -11,6 +11,7 @@ requires:
   - More/Array.Extras
   - More/Hash.Cookie
   - More/String.QueryString
+  - Core/Cookie
 
 provides: [MooTune]
 
@@ -21,7 +22,6 @@ authors:
 */
 
 // todo 
-// use cookie to ensure user is always on same test for session?
 // add ability to force a test based on params?
 // specify an array of backends per call to handleEvent
 // per-event blocking of test inclusion
@@ -37,6 +37,9 @@ var MooTune = new Class({
     reportErrors: true,
     testAppliedClass: 'mooTuned',
     useUrlParams: true,
+
+    cookieName: '_MooTune_ID',
+    cookieDurationInDays: 14,
     
     tests: [],
     testsAtOnce: null,
@@ -232,9 +235,9 @@ var MooTune = new Class({
         
         Object.merge(eventWithTests, eventWithDefaults);
         backend.handleEvent(eventWithTests);
-      } else
+      } else {
         backend.handleEvent(eventWithDefaults);
-    
+      }
       this.fireEvent('eventSentToBackend', [name, backend, this]);
     }, this);
     
@@ -242,7 +245,23 @@ var MooTune = new Class({
     this.fireEvent('eventComplete', [eventWithDefaults, this]);
     
     return this;
+  },
+
+  get_identity: function() {
+    return this.userID || Cookie.read(this.options.cookieName);
+  },
+
+  identify: function(user_id) {
+    // run through each backend and run the identify function, if exists.
+    Object.each(this.backends, function(backend) {
+      if (backend['identify'] !== undefined) {
+        backend.identify(user_id);
+      }
+    });
+    this.userID = user_id;
+    Cookie.write(this.options.cookieName, user_id, {duration: this.options.cookieDurationInDays}); // remember for 2 weeks
   }
+  
 });
 
 MooTune.Backends = {
@@ -268,8 +287,38 @@ MooTune.Backends = {
         mpmetrics.track(event.name, event.info);
       else if (typeof(mpq) == 'object')
         mpq.push(['track', event.name, event.info]);
+    },
+    identify: function(user_id) {
+      if (typeof(mpmetrics) == 'object') {
+        mpmetrics.identify(user_id);
+      }
+      if (typeof(mpq) == 'object') {
+        mpq.push(['name_tag', user_id]);
+      }
     }
-  }/*,
+  },
+  'KISSMetrics': {
+    sendTestsWithEvents: true,
+    serviceAvailable: function() {
+      return typeof(_kmq) != 'undefined';
+    },
+    handleEvent: function(event) {
+      if (typeof(_kmq) == 'object') { _kmq.push(['record', event.name, event.info]); }
+    },
+    identify: function(user_id) {
+      if (typeof(_kmq) == 'object') {
+        if (typeof(KM) == 'object') {
+          if (KM.__myID__) { // we're using our own set ID
+            _kmq.push(['alias', user_id, KM._i]);
+            return;
+          }          
+        }
+        _kmq.push(['identify', user_id],
+                  function(){ KM.__myID__ = true; });
+      }
+    }
+  }
+  /*,
   'Basic': {
     serviceAvailable: function(){
       return false;
