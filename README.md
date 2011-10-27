@@ -157,6 +157,48 @@ MooTune Method: constructor
 * eventSentToBackend - The event was sent to a backend. Arguments: name of the backend, the backend object and this.
 * eventComplete - The event was handled completely. Arguments: event object and this.
 
+#### Example
+
+    var mt = new MooTune({
+	
+      tests: [
+    	  { name: 'Header Signup Button Text',
+    	    description: 'Change the text of the button in the header that scrolls down to the form.',
+    	    type: 'text',
+    	    element: '#header-sign-up',
+    	    versions: [
+    	      'Get on the beta list',
+    	      'Save your spot',
+    	      'Sign up for an invite'
+    	    ]
+    	  },
+    	  { name: 'Header Signup Button Color',
+    	    description: 'Change the color of the button in the header that scrolls down to the form.',
+    	    type: 'class',
+    	    element: '#header-sign-up',
+    	    versions: [
+    	      'blue',
+    	      'green'
+    	    ]
+    	  },
+
+    	  { name: 'Headline Text',
+    	    type: 'text',
+    	    element: '#headline',
+    	    versions: [
+    	      'Banking shouldn’t be hard.',
+    	      'Isn’t it time for simple banking?',
+    	      'Banking that treats you like a person.',
+    	      'We’re not a bank. We’re better.'
+    	    ]
+    	  }
+    	],
+      onEventComplete: function(e){
+        console.log('event complete ' + e.name, e);
+      }
+
+    });
+
 
 MooTune Method: handleEvent
 ---------------------------
@@ -167,53 +209,23 @@ MooTune Method: handleEvent
 	
 #### Arguments
 
-1. event - event object (details above).
+1. event - event object (details above) or string.
 
 #### Returns
 
 Instance of MooTune (for chaining).
 
-#### Example
-
-	var mt = new MooTune({
-		
-    tests: [
-		  { name: 'Header Signup Button Text',
-		    description: 'Change the text of the button in the header that scrolls down to the form.',
-		    type: 'text',
-		    element: '#header-sign-up',
-		    versions: [
-		      'Get on the beta list',
-		      'Save your spot',
-		      'Sign up for an invite'
-		    ]
-		  },
-		  { name: 'Header Signup Button Color',
-		    description: 'Change the color of the button in the header that scrolls down to the form.',
-		    type: 'class',
-		    element: '#header-sign-up',
-		    versions: [
-		      'blue',
-		      'green'
-		    ]
-		  },
-
-		  { name: 'Headline Text',
-		    type: 'text',
-		    element: '#headline',
-		    versions: [
-		      'Banking shouldn’t be hard.',
-		      'Isn’t it time for simple banking?',
-		      'Banking that treats you like a person.',
-		      'We’re not a bank. We’re better.'
-		    ]
-		  }
-		],
-    onEventComplete: function(e){
-      console.log('event complete ' + e.name, e);
-    }
-
-	});
+#### Examples
+	
+    this.mt.handleEvent({ name: 'Troll the Troller', options: { ignoreDuplicates: true }});
+  
+    this.mt.handleEvent({ 
+      name: 'Invalid Form Input',
+      info: { 'error': 'duplicate email' },
+      options: { ignoreDuplicates: true }
+    });
+    
+    this.mt.handleEvent('stuff happened'); // 'stuf happened' becomes event name
 
 Screenshots
 -----------
