@@ -59,6 +59,18 @@ var MooTune = new Class({
         description: ''
       },
       options: {}
+    },
+    getEventDefaults: function(){
+      return {
+        info: {
+          pageUrl: document.URL,
+          time: new Date().getTime(),
+          userAgent: navigator.userAgent,
+          platform: Browser.Platform.name,
+          browser: Browser.name,
+          referrer: document.referrer
+        }
+      };
     }
   },
   
@@ -203,16 +215,7 @@ var MooTune = new Class({
     if (!this.active) return this;
     if (typeOf(event) == 'string') var event = { name: event };
     
-    var eventWithDefaults = {
-          info: {
-            pageUrl: document.URL,
-            time: new Date().getTime(),
-            userAgent: navigator.userAgent,
-            platform: Browser.Platform.name,
-            browser: Browser.name,
-            referrer: document.referrer
-          }
-        };
+    var eventWithDefaults = this.options.getEventDefaults();
         
     Object.merge(eventWithDefaults, this.options.eventSchema, event);
         
