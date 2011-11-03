@@ -257,10 +257,11 @@ var MooTune = new Class({
     return this;
   },
   
-  identify: function() {
+  identify: function(id) {
     Object.each(this.backends, function(backend) {
-      if (backend['identify']) backend.identify(this.options.getIdentity());
+      if (backend['identify']) backend.identify(id || this.options.getIdentity());
     }, this);
+    return this;
   }
   
 });
