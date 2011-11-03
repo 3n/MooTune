@@ -308,11 +308,17 @@ MooTune.Backends = {
     identify: function(user_id) {
       if (typeof(_kmq) == 'object') {
         if (typeof(KM) == 'object') {
-          if (KM.__myID__) { // we're using our own set ID
+          // so Kissmetrics has two methods, alias and identify.
+          // if we've ID'd this person before, lets just alias
+          // them to our old ID, which is stored in KM._i .          
+          if (KM.__myID__) {
             _kmq.push(['alias', user_id, KM._i]);
             return;
           }          
         }
+        // this calls the identify function, and as a
+        // callback it sets a __myID__ prop signifying
+        // that we've done our own ID'ing with Kissm.
         _kmq.push(['identify', user_id],
                   function(){ KM.__myID__ = true; });
       }
