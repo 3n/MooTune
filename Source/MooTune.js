@@ -22,6 +22,7 @@ authors:
 */
 
 // todo 
+// use cookie to ensure user is always on same test for session?
 // add ability to force a test based on params?
 // specify an array of backends per call to handleEvent
 // per-event blocking of test inclusion
@@ -37,10 +38,6 @@ var MooTune = new Class({
     reportErrors: true,
     testAppliedClass: 'mooTuned',
     useUrlParams: true,
-
-    cookieName: '_MooTune_ID',
-    cookieDurationInDays: 14,
-    
     tests: [],
     testsAtOnce: null,
     testSchema: {
@@ -74,6 +71,19 @@ var MooTune = new Class({
           referrer: document.referrer
         }
       };
+    },
+    cookieName: '_MooTune_ID',
+    cookieDurationInDays: 100,
+    generateId: function(){
+      return Math.random() * 10000000000000000;
+    },
+    getIdentity: function(){
+      var currentId = Cookie.read(this.options.cookieName);
+      if (currentId) return currentId;
+      
+      var newId = this.options.generateId();
+      Cookie.write(this.options.cookieName, newId, {duration: this.options.cookieDurationInDays});
+      return newId;
     }
   },
   
@@ -235,9 +245,9 @@ var MooTune = new Class({
         
         Object.merge(eventWithTests, eventWithDefaults);
         backend.handleEvent(eventWithTests);
-      } else {
+      } else
         backend.handleEvent(eventWithDefaults);
-      }
+
       this.fireEvent('eventSentToBackend', [name, backend, this]);
     }, this);
     
@@ -246,20 +256,11 @@ var MooTune = new Class({
     
     return this;
   },
-
-  get_identity: function() {
-    return this.userID || Cookie.read(this.options.cookieName);
-  },
-
-  identify: function(user_id) {
-    // run through each backend and run the identify function, if exists.
+  
+  identify: function() {
     Object.each(this.backends, function(backend) {
-      if (backend['identify'] !== undefined) {
-        backend.identify(user_id);
-      }
-    });
-    this.userID = user_id;
-    Cookie.write(this.options.cookieName, user_id, {duration: this.options.cookieDurationInDays}); // remember for 2 weeks
+      if (backend['identify']) backend.identify(this.options.getIdentity());
+    }, this);
   }
   
 });
@@ -288,13 +289,9 @@ MooTune.Backends = {
       else if (typeof(mpq) == 'object')
         mpq.push(['track', event.name, event.info]);
     },
-    identify: function(user_id) {
-      if (typeof(mpmetrics) == 'object') {
-        mpmetrics.identify(user_id);
-      }
-      if (typeof(mpq) == 'object') {
-        mpq.push(['name_tag', user_id]);
-      }
+    identify: function(userId) {
+      if (typeof(mpmetrics) == 'object') mpmetrics.identify(userId);
+      if (typeof(mpq) == 'object') mpq.push(['name_tag', userId]);
     }
   },
   'KISSMetrics': {
@@ -305,21 +302,21 @@ MooTune.Backends = {
     handleEvent: function(event) {
       if (typeof(_kmq) == 'object') { _kmq.push(['record', event.name, event.info]); }
     },
-    identify: function(user_id) {
+    identify: function(userId) {
       if (typeof(_kmq) == 'object') {
         if (typeof(KM) == 'object') {
           // so Kissmetrics has two methods, alias and identify.
           // if we've ID'd this person before, lets just alias
           // them to our old ID, which is stored in KM._i .          
           if (KM.__myID__) {
-            _kmq.push(['alias', user_id, KM._i]);
+            _kmq.push(['alias', userId, KM._i]);
             return;
           }          
         }
         // this calls the identify function, and as a
         // callback it sets a __myID__ prop signifying
         // that we've done our own ID'ing with Kissm.
-        _kmq.push(['identify', user_id],
+        _kmq.push(['identify', userId],
                   function(){ KM.__myID__ = true; });
       }
     }
