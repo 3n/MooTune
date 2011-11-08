@@ -81,7 +81,7 @@ var MooTune = new Class({
       var currentId = Cookie.read(this.options.cookieName);
       if (currentId) return currentId;
       
-      var newId = this.options.generateId();
+      var newId = this.options.generateId.call(this);
       Cookie.write(this.options.cookieName, newId, {duration: this.options.cookieDurationInDays});
       return newId;
     }
@@ -259,7 +259,7 @@ var MooTune = new Class({
   
   identify: function(id) {
     Object.each(this.backends, function(backend) {
-      if (backend['identify']) backend.identify(id || this.options.getIdentity());
+      if (backend['identify']) backend.identify(id || this.options.getIdentity.call(this));
     }, this);
     return this;
   }
