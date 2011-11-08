@@ -78,7 +78,7 @@ var MooTune = new Class({
       return Math.random() * 10000000000000000;
     },
     getIdentity: function(){
-      var currentId = Cookie.read(this.options.cookieName);
+      var currentId = Cookie.read(this.cookieName); //dfhajklsd
       if (currentId) return currentId;
       
       var newId = this.options.generateId();
