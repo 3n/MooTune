@@ -224,9 +224,10 @@ var MooTune = new Class({
     return this.handleEvent(error);
   },
   
-  handleEvent: function(event){
+  handleEvent: function(event, info){
     if (!this.active) return this;
     if (typeOf(event) == 'string') var event = { name: event };
+    if (typeOf(info) == 'object') event.info = info;
     
     var eventWithDefaults = this.options.getEventDefaults();
         
