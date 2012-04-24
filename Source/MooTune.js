@@ -126,7 +126,7 @@ var MooTune = new Class({
   },
   
   activate: function(){ this.active = true; },
-  deactiveat: function(){ this.active = false; },
+  deactivate: function(){ this.active = false; },
   
   runTests: function(){
     if (this.options.testsAtOnce == null)
@@ -224,10 +224,11 @@ var MooTune = new Class({
     return this.handleEvent(error);
   },
   
-  handleEvent: function(event, info){
+  handleEvent: function(event, info, options){
     if (!this.active) return this;
     if (typeOf(event) == 'string') var event = { name: event };
     if (typeOf(info) == 'object') event.info = info;
+    if (typeOf(options) == 'object') event.options = options;
     
     var eventWithDefaults = this.options.getEventDefaults();
         
