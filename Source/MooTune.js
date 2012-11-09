@@ -192,7 +192,7 @@ var MooTune = new Class({
       if (storedIndex != undefined)
         return test.versions[storedIndex];
       else {
-        var randomIndex = (Math.random() * (test.versions.length-1)).round();
+        var randomIndex = Math.floor(Math.random() * (test.versions.length));
         this.testCookieStore.set(test.name, randomIndex);
         return test.versions[randomIndex];
       }
