@@ -50,6 +50,7 @@ var MooTune = new Class({
       versions: []      
       // onSelected: function
       // pickVersion: function
+      // shouldRun: function
     },
     
     eventSchema: {
@@ -148,6 +149,8 @@ var MooTune = new Class({
       
     if (!( Math.random() < test.sampleSize ))
       return this;
+    
+    if (test.shouldRun && !test.shouldRun.call(test, this)) return this;
     
     var version = this.getTestVersion(test);
     test.selectedVersion = version;

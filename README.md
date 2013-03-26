@@ -104,6 +104,7 @@ options as you want). When instantiating MooTune, pass in an array of tests. Tes
 	  alwaysRun: false, // overrides the MooTune option for number of tests to run
 		persist: false, // stores test choice in cookie to persist across user's sessions
 		pickVersion: function(){ return test.versions[0]; }, // forces first version every time
+		shouldRun: funtion(mt){ return mt.newIdentity; }, // only run test for new visitors
 	  versions: [
 	    'some',
 	    'values',
