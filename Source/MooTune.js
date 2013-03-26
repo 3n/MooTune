@@ -73,13 +73,15 @@ var MooTune = new Class({
       };
     },
     cookieName: '_MooTune_ID',
-    cookieDurationInDays: 100,
+    cookieDurationInDays: 365,
     generateId: function(){
       return Math.random() * 10000000000000000;
     },
     getIdentity: function(){
       var currentId = Cookie.read(this.options.cookieName);
       if (currentId) return currentId;
+      
+      this.newIdentity = true;
       
       var newId = this.options.generateId.call(this);
       Cookie.write(this.options.cookieName, newId, {duration: this.options.cookieDurationInDays});
