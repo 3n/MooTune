@@ -40,6 +40,7 @@ var MooTune = new Class({
     useUrlParams: true,
     tests: [],
     testsAtOnce: null,
+    testsCookieName: 'MooTuneTests',
     testSchema: {
       name: '',
       description: '',
@@ -192,7 +193,7 @@ var MooTune = new Class({
       if (!isNaN(num)) return test.versions[num];
       else return paramName;
     } else if (test.persist){
-      this.testCookieStore = this.testCookieStore || new Hash.Cookie('MooTuneTests', {duration: 100});
+      this.testCookieStore = this.testCookieStore || new Hash.Cookie(this.options.testsCookieName, {duration: 100});
       var storedIndex = this.testCookieStore.get(test.name);
       if (storedIndex != undefined)
         return test.versions[storedIndex];
