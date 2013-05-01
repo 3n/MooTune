@@ -146,6 +146,7 @@ MooTune Method: constructor
 						    if you specify a number N, the tests array will be shuffled and the first N will be
 								ran. All other tests will be ignored for this session, unless they have the alwaysRun
 								flag turned on.
+* testsCookieName (string: defaults to 'MooTuneTests') Name of the cookie to store test versions in.
 * testSchema - (object) The schema and defaults of the test object.
 * eventSchema - (object) The schema and defaults of the event object.
 * testAppliedClass - (string: defaults to 'mooTuned') class to add to test-modified element.
