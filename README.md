@@ -140,6 +140,7 @@ MooTune Method: constructor
 
 * active - (boolean: defaults to true) Whether or not to fire events passed to handleEvent.
 * reportErrors - (boolean: defaults to true) Send Javascript errors to the Backend(s).
+* runOnInit - (boolean: defaults to true) Call `runTests()` when the MooTune object has been created.
 * tests - (array: defaults to []) Array of test objects.
 * testsAtOnce - (int: defaults to null) How many tests from the tests array to run. Null means all.
 						    if you specify a number N, the tests array will be shuffled and the first N will be

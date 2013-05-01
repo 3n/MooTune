@@ -35,6 +35,7 @@ var MooTune = new Class({
   
   options: {
     active: true,
+    runOnInit: true,
     reportErrors: true,
     testAppliedClass: 'mooTuned',
     useUrlParams: true,
@@ -109,7 +110,7 @@ var MooTune = new Class({
     if (this.options.useUrlParams)
       this.urlParams = document.location.search.slice(1).parseQueryString();
                   
-    this.runTests();
+    if (this.options.runOnInit) this.runTests();
     
     return this;
   },
