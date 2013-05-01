@@ -140,7 +140,9 @@ var MooTune = new Class({
       this.tests[i] = this.runTest(this.tests[i]);
     }, this);
     
-    this.tests.filter(function(item){ return item.alwaysRun && !item.running; }).each(function(test){
+    this.tests.filter(function(item){
+      return item.alwaysRun && !item.running;
+    }).each(function(test){
       this.runTest(test);
     }, this);
   },
@@ -151,7 +153,7 @@ var MooTune = new Class({
     if (!( Math.random() < test.sampleSize ))
       return this;
     
-    if (test.shouldRun && !test.shouldRun.call(test, this)) return this;
+    if (test.shouldRun && !test.shouldRun.call(test, this)) return test;
     
     var version = this.getTestVersion(test);
     test.selectedVersion = version;
