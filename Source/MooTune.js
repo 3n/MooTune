@@ -196,13 +196,31 @@ var MooTune = new Class({
       if (!isNaN(num)) return test.versions[num];
       else return paramName;
     } else if (test.persist){
-      this.testCookieStore = this.testCookieStore || new Hash.Cookie(this.options.testsCookieName, {duration: 100});
-      var storedIndex = this.testCookieStore.get(test.name);
-      if (storedIndex != undefined)
-        return test.versions[storedIndex];
+      // create a cookie to persist into if it doesn't already exist
+      this.testCookieStore = this.testCookieStore ||
+        new Hash.Cookie(this.options.testsCookieName, {duration: 100});
+
+      // get any previously stored version of this test
+      var stored = this.testCookieStore.get(test.name);
+
+      // if a previous version was stored, use that
+      if (stored != undefined) {
+        return test.versionStore === 'string' ?
+          // if the test versionStore is 'string', just return that version.
+          // otherwise, index it
+          stored : test.versions[stored];
+      }
+      // otherwise, choose a different version at random
       else {
         var randomIndex = Math.floor(Math.random() * (test.versions.length));
-        this.testCookieStore.set(test.name, randomIndex);
+
+        // if the versionStore is 'string', persist the version name.
+        // otherwise, persist the index
+        this.testCookieStore.set(
+          test.name,
+          test.versionStore === 'string' ? test.versions[randomIndex] : randomIndex
+        );
+
         return test.versions[randomIndex];
       }
     } else if (test.pickVersion){
