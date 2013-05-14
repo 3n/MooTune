@@ -50,6 +50,11 @@ var MooTune = new Class({
       alwaysRun: false,
       persist: false,
       versions: []      
+
+      // 'index'  - persist the index of the version chosen to the cookie
+      // 'string' - persist the version string to the cookie
+      versionStore: 'index',
+
       // onSelected: function
       // pickVersion: function
       // shouldRun: function
