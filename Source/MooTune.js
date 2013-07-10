@@ -293,6 +293,8 @@ var MooTune = new Class({
   },
 
   identify: function(id) {
+    this.options.getIdentity();
+
     Object.each(this.backends, function(backend) {
       if (backend['identify']) backend.identify(id || this.options.getIdentity.call(this));
     }, this);
