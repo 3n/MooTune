@@ -82,6 +82,7 @@ var MooTune = new Class({
     },
     cookieName: '_MooTune_ID',
     cookieDurationInDays: 365,
+    cookieSecure: document.location.protocol === 'https:',
     generateId: function(){
       return Math.random() * 10000000000000000;
     },
@@ -92,7 +93,10 @@ var MooTune = new Class({
       this.newIdentity = true;
 
       var newId = this.options.generateId.call(this);
-      Cookie.write(this.options.cookieName, newId, {duration: this.options.cookieDurationInDays});
+      Cookie.write(this.options.cookieName, newId, {
+        duration: this.options.cookieDurationInDays,
+        secure: this.options.cookieSecure
+      });
       return newId;
     }
   },
@@ -204,7 +208,10 @@ var MooTune = new Class({
     } else if (test.persist){
       // create a cookie to persist into if it doesn't already exist
       this.testCookieStore = this.testCookieStore ||
-        new Hash.Cookie(this.options.testsCookieName, {duration: 100});
+        new Hash.Cookie(this.options.testsCookieName, {
+          duration: 100,
+          secure: this.options.cookieSecure
+        });
 
       // get any previously stored version of this test
       var stored = this.testCookieStore.get(test.name);
