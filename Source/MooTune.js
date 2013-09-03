@@ -162,7 +162,7 @@ var MooTune = new Class({
       test = Object.merge({}, this.options.testSchema, test);
 
     if (!( Math.random() < test.sampleSize ))
-      return this;
+      return test;
 
     if (test.shouldRun && !test.shouldRun.call(test, this)) return test;
 
