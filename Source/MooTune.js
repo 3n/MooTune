@@ -170,14 +170,18 @@ var MooTune = new Class({
     test.selectedVersion = version;
 
     Object.each(this.backends, function(backend, name){
-      if (backend.sendTestsAsEvents && this.active)
-        backend.handleEvent({
-          name: '(Test) ' + test.name + ' / ' + version,
-          info: {
-            category: 'Test',
-            description: test.description
-          }
-        });
+      if (backend.sendTestsAsEvents && this.active){
+        if (backend.handleTest)
+          backend.handleTest(test, this);
+        else
+          backend.handleEvent({
+            name: '(Test) ' + test.name + ' / ' + version,
+            info: {
+              category: 'Test',
+              description: test.description
+            }
+          });
+      }
     }, this);
 
     var elem = $$(test.element);
@@ -218,6 +222,7 @@ var MooTune = new Class({
 
       // if a previous version was stored, use that
       if (stored != undefined) {
+        test.fromCookieStore = true;
         return test.versionStore === 'string' ?
           // if the test versionStore is 'string', just return that version.
           // otherwise, index it

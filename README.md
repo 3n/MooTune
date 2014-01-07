@@ -123,13 +123,19 @@ backend recieving the data:
 1. sendTestsAsEvents:true - Test triggers an event that can be tracked against all other events.
    Using this method, you can compare the number of times a test event fired vs. a conversion
    event. If your analytics backend provides funnels, use them. Use the `handleTest` method on
-   the backend to determine how these test events are formed.
+   the backend to determine how these test events are formed. These events only fire on first
+   assignment of a test version if using persist.
 2. sendTestsWithEvents:true - Nothing at this point, but when any other event fires, all your tests
    will be included as properties. This allows you to drill down into an event (e.g. Signup) and
    see the success ratio of each test's option.
 
 After one (or both) of those options is complete, the element itself is modified in the way you
 specified, using the value selected at random.
+
+#### Test Properties
+
+* fromCookieStore - (boolean: defaults to undefined) Set to true when the test version was pulled
+from the cookie store.
 
 
 MooTune Method: constructor
