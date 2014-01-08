@@ -151,9 +151,9 @@ var MooTune = new Class({
       this.tests[i] = this.runTest(this.tests[i]);
     }, this);
 
-    this.tests.filter(function(item){
-      return item.alwaysRun && !item.running;
-    }).each(function(test){
+    this.tests.filter(function(test){
+      return (test.alwaysRun && !test.running) || this.testInParams(test);
+    }, this).each(function(test){
       this.runTest(test);
     }, this);
   },
@@ -161,10 +161,12 @@ var MooTune = new Class({
     if (!test.running)
       test = Object.merge({}, this.options.testSchema, test);
 
-    if (!( Math.random() < test.sampleSize ))
-      return test;
-
-    if (test.shouldRun && !test.shouldRun.call(test, this)) return test;
+    if (!this.testInParams(test)){
+      if (!( Math.random() < test.sampleSize ))
+        return test;
+      if (test.shouldRun && !test.shouldRun.call(test, this))
+        return test;
+    }
 
     var version = this.getTestVersion(test);
     test.selectedVersion = version;
@@ -204,7 +206,7 @@ var MooTune = new Class({
     return test;
   },
   getTestVersion: function(test){
-    if (this.options.useUrlParams && this.urlParams[test.name] !== undefined){
+    if (this.testInParams(test)){
       var paramName = this.urlParams[test.name],
           num = paramName.toInt();
       if (!isNaN(num)) return test.versions[num];
@@ -246,6 +248,10 @@ var MooTune = new Class({
       if (pickedVersion) return pickedVersion;
     }
     return test.versions.getRandom();
+  },
+
+  testInParams: function(test){
+    return this.options.useUrlParams && this.urlParams[test.name] !== undefined;
   },
 
   getRunningTests: function(){
