@@ -118,7 +118,7 @@ var MooTune = new Class({
 
     if (this.options.useUrlParams)
       this.urlParams = document.location.search.slice(1).parseQueryString();
-      
+
     // create a cookie to persist into if it doesn't already exist
     this.testCookieStore = this.testCookieStore ||
       new Hash.Cookie(this.options.testsCookieName, {
@@ -168,10 +168,10 @@ var MooTune = new Class({
     if (!test.running)
       test = Object.merge({}, this.options.testSchema, test);
 
-    if (!this.testInParams(test) && !this.testIsPersisted(test)){
-      if (!( Math.random() < test.sampleSize ))
-        return test;
+    if (!this.testInParams(test)){
       if (test.shouldRun && !test.shouldRun.call(test, this))
+        return test;
+      if (!this.testIsPersisted(test) && !(Math.random() < test.sampleSize))
         return test;
     }
 
