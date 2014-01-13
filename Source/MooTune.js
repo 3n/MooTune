@@ -118,6 +118,13 @@ var MooTune = new Class({
 
     if (this.options.useUrlParams)
       this.urlParams = document.location.search.slice(1).parseQueryString();
+      
+    // create a cookie to persist into if it doesn't already exist
+    this.testCookieStore = this.testCookieStore ||
+      new Hash.Cookie(this.options.testsCookieName, {
+        duration: 100,
+        secure: this.options.cookieSecure
+      });
 
     if (this.options.runOnInit) this.runTests();
 
@@ -161,7 +168,7 @@ var MooTune = new Class({
     if (!test.running)
       test = Object.merge({}, this.options.testSchema, test);
 
-    if (!this.testInParams(test)){
+    if (!this.testInParams(test) && !this.testIsPersisted(test)){
       if (!( Math.random() < test.sampleSize ))
         return test;
       if (test.shouldRun && !test.shouldRun.call(test, this))
@@ -212,13 +219,6 @@ var MooTune = new Class({
       if (!isNaN(num)) return test.versions[num];
       else return paramName;
     } else if (test.persist){
-      // create a cookie to persist into if it doesn't already exist
-      this.testCookieStore = this.testCookieStore ||
-        new Hash.Cookie(this.options.testsCookieName, {
-          duration: 100,
-          secure: this.options.cookieSecure
-        });
-
       // get any previously stored version of this test
       var stored = this.testCookieStore.get(test.name);
 
@@ -252,6 +252,10 @@ var MooTune = new Class({
 
   testInParams: function(test){
     return this.options.useUrlParams && this.urlParams[test.name] !== undefined;
+  },
+
+  testIsPersisted: function(test){
+    return test.persist && this.testCookieStore && this.testCookieStore.get(test.name) != undefined;
   },
 
   getRunningTests: function(){
