@@ -120,7 +120,7 @@ var MooTune = new Class({
       this.urlParams = document.location.search.slice(1).parseQueryString();
 
     // create a cookie to persist into if it doesn't already exist
-    this.testCookieStore = this.testCookieStore ||
+    this.testCookieStore =
       new Hash.Cookie(this.options.testsCookieName, {
         duration: 100,
         secure: this.options.cookieSecure
@@ -171,8 +171,14 @@ var MooTune = new Class({
     if (!this.testInParams(test)){
       if (test.shouldRun && !test.shouldRun.call(test, this))
         return test;
-      if (!this.testIsPersisted(test) && !(Math.random() < test.sampleSize))
+
+      if (this.testCookieStore.get(test.name) == -1)
         return test;
+
+      if (!this.testIsPersisted(test) && !(Math.random() < test.sampleSize)){
+        if (test.persist) this.testCookieStore.set(test.name, -1);
+        return test;
+      }
     }
 
     var version = this.getTestVersion(test);
