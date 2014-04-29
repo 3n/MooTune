@@ -223,8 +223,12 @@ var MooTune = new Class({
       var paramName = this.urlParams[test.name],
           num = paramName.toInt();
       if (!isNaN(num)) return test.versions[num];
-      else return paramName;
-    } else if (test.persist){
+
+      // match against the known versions, don't allow just any value
+      else if (test.versions.indexOf(paramName) > -1) return paramName;
+    }
+
+    if (test.persist){
       // get any previously stored version of this test
       var stored = this.testCookieStore.get(test.name);
 
