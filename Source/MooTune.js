@@ -219,6 +219,7 @@ var MooTune = new Class({
     return test;
   },
   getTestVersion: function(test){
+    // use the version from the URL parameters if possible
     if (this.testInParams(test)){
       var paramName = this.urlParams[test.name],
           num = paramName.toInt();
@@ -232,27 +233,34 @@ var MooTune = new Class({
       // get any previously stored version of this test
       var stored = this.testCookieStore.get(test.name);
 
-      // if a previous version was stored, use that
+      // if a previous version was stored, try to use that
       if (stored != undefined) {
-        test.fromCookieStore = true;
-        return test.versionStore === 'string' ?
-          // if the test versionStore is 'string', just return that version.
-          // otherwise, index it
-          stored : test.versions[stored];
+        // if the test versionStore isn't 'string', index it
+        if (test.versionStore !== 'string') {
+          stored = test.versions[stored]
+        }
+
+        // if the version is still valid, use it
+        if (test.versions.indexOf(stored) > -1) {
+          test.fromCookieStore = true;
+          return stored
+        } else  {
+          // otherwise clear the stored value
+          this.testCookieStore.erase(test.name);
+        }
       }
+
       // otherwise, choose a different version at random
-      else {
-        var randomIndex = Math.floor(Math.random() * (test.versions.length));
+      var randomIndex = Math.floor(Math.random() * (test.versions.length));
 
-        // if the versionStore is 'string', persist the version name.
-        // otherwise, persist the index
-        this.testCookieStore.set(
-          test.name,
-          test.versionStore === 'string' ? test.versions[randomIndex] : randomIndex
-        );
+      // if the versionStore is 'string', persist the version name.
+      // otherwise, persist the index
+      this.testCookieStore.set(
+        test.name,
+        test.versionStore === 'string' ? test.versions[randomIndex] : randomIndex
+      );
 
-        return test.versions[randomIndex];
-      }
+      return test.versions[randomIndex];
     } else if (test.pickVersion){
       var pickedVersion = test.pickVersion();
       if (pickedVersion) return pickedVersion;
