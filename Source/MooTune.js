@@ -237,13 +237,13 @@ var MooTune = new Class({
       if (stored != undefined) {
         // if the test versionStore isn't 'string', index it
         if (test.versionStore !== 'string') {
-          stored = test.versions[stored]
+          stored = test.versions[stored];
         }
 
         // if the version is still valid, use it
         if (test.versions.indexOf(stored) > -1) {
           test.fromCookieStore = true;
-          return stored
+          return stored;
         } else  {
           // otherwise clear the stored value
           this.testCookieStore.erase(test.name);
