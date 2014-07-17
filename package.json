@@ -1,0 +1,25 @@
+{
+  "name": "MooTune",
+  "version": "1.0.0",
+  "description": "A MooTools class for logging events, errors and AB tests to multiple backends such as Google Analytics, Mixpanel or your own server logs.",
+  "main": "./Source/MooTune.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/OscarGodson/MooTune.git"
+  },
+  "keywords": [
+    "ab",
+    "mootools",
+    "testing",
+    "frontend"
+  ],
+  "author": "3n",
+  "license": "none",
+  "bugs": {
+    "url": "https://github.com/OscarGodson/MooTune/issues"
+  },
+  "homepage": "https://github.com/OscarGodson/MooTune"
+}
