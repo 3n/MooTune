@@ -412,3 +412,5 @@ MooTune.Backends = {
     }
   }*/
 };
+
+window.MooTune = MooTune;
